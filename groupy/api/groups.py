@@ -70,7 +70,10 @@ class Groups(base.Manager):
         """
         url = utils.urljoin(self.url, id)
         response = self.session.get(url)
-        return Group(self, **response.data)
+        try:
+            return Group(self, **response.data)
+        except TypeError:
+            return Group(self, *response.data)
 
     def create(self, name, description=None, image_url=None, share=None, **kwargs):
         """Create a new group.
